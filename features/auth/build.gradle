@@ -1,0 +1,67 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        minSdk 23
+        targetSdk 31
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+    }
+
+    namespace 'paolo.udacity.auth'
+
+}
+
+dependencies {
+
+    // Versions of libraries used
+    apply from: "$project.rootDir/dependencies.gradle"
+
+    // Jacoco for code coverage report
+    apply from: "$project.rootDir/jacoco.gradle"
+
+    // Common libraries
+    implementation project(":libraries:foundation")
+
+    // Import the BoM for the Firebase platform
+    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+
+    // Dagger hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation project(path: ':libraries:foundation', configuration: 'testDependencies')
+
+    androidTestImplementation project(path: ':libraries:foundation', configuration: 'androidTestDependencies')
+
+}

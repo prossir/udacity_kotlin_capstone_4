@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- [FailureMapper] -->
+    <!-- NetworkConnectionException -->
+    <string name="error_ups">¡Upss!</string>
+    <string name="error_no_internet_connection_title">You are not connected</string>
+    <string name="error_no_internet_connection_description">You seem to not be connected to the internet</string>
+    <!-- Default exception -->
+    <string name="error_an_error_occurred">An error occurred</string>
+
+</resources>

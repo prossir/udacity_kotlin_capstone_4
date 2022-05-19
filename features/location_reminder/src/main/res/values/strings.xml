@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- [fragment_maintain_reminder.xml] -->
+    <string name="tl_hint_reminder_title">Title</string>
+    <string name="tl_hint_reminder_description">Description</string>
+    <string name="tl_hint_reminder_range_radius">Range radius (in meters)</string>
+    <string name="tl_hint_chosen_location">Location</string>
+
+    <string name="iv_close_content_description">A second way of closing the create/edit reminder dialog.</string>
+    <string name="b_title_create">Create</string>
+    <string name="b_title_delete">Delete</string>
+
+
+
+</resources>

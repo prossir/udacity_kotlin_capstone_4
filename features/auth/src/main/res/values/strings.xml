@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Firebase Auth Configuration for the Google Login-->
+    <string name="default_web_client_id">58792467003-4ii9u8evpqn17t2ernbiiqptd5hs6eao.apps.googleusercontent.com</string>
+
+    <!-- [activity_authentication.xml] -->
+    <string name="iv_logo_content_description">App Logo, A google map (yeah I really need to make my own assets xD.</string>
+    <string name="tv_app_title_text">Udacity</string>
+    <string name="tv_app_subtitle_text">Fourth Test - Geo Reminders</string>
+    <string name="mb_title_enter">Enter</string>
+
+</resources>

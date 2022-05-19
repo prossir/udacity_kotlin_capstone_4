@@ -1,0 +1,9 @@
+ext {
+
+    hilt_version = 2.41
+
+    navigation_version = "2.4.2"
+
+    moshi_version = "1.13.0"
+
+}

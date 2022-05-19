@@ -1,0 +1,83 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "paolo.udacity.udacity_kotlin_capstone_4"
+        minSdk 23
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+    }
+
+    namespace 'paolo.udacity.udacity_kotlin_capstone_4'
+}
+
+/* Merges all Hilt stuff in the app module */
+hilt {
+    enableExperimentalClasspathAggregation = true
+}
+
+dependencies {
+    // Get versions of libraries used
+    apply from: "$project.rootDir/dependencies.gradle"
+
+    // Dependant projects
+    implementation project(":features:auth")
+    implementation project(":features:location_reminder")
+
+    // Multidex
+    implementation "androidx.multidex:multidex:2.0.1"
+
+    // Timber
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+
+    // Time backwards compatibility
+    implementation "com.jakewharton.threetenabp:threetenabp:1.2.3"
+
+    // Firebase for initialization
+    implementation platform('com.google.firebase:firebase-bom:30.0.1')
+    implementation 'com.google.firebase:firebase-common-ktx'
+
+    // Dagger Hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation project(path: ':libraries:foundation', configuration: 'testDependencies')
+
+    androidTestImplementation 'androidx.test:monitor:1.5.0'
+    androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.3'
+    androidTestImplementation 'junit:junit:4.13.2'
+    androidTestImplementation project(path: ':libraries:foundation', configuration: 'androidTestDependencies')
+}
