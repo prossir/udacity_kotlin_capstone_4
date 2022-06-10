@@ -22,30 +22,24 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:contentDescription="@string/iv_close_content_description"
+            android:onClick="@{_ -> viewModel.dismissMaintainReminder()}"
             android:src="@drawable/ic_close"
             app:layout_constraintBottom_toBottomOf="@+id/tv_maintain_reminder_title"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_maintain_reminder_title" />
+            app:layout_constraintTop_toTopOf="@+id/tv_maintain_reminder_title"
+            app:tint="@color/colorPrimary" />
 
         <TextView
             android:id="@+id/tv_maintain_reminder_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:text="@string/s_tv_maintain_reminder_title_text"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="New reminder" />
-
-        <View
-            android:id="@+id/v_separator"
-            android:layout_width="match_parent"
-            android:layout_height="0.8dp"
-            android:layout_marginTop="4dp"
-            android:background="@color/black"
-            app:layout_constraintTop_toBottomOf="@+id/tv_maintain_reminder_title" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tl_reminder_title"
@@ -53,9 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="@string/tl_hint_reminder_title"
-            android:minHeight="56dp"
-            app:boxBackgroundColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@+id/v_separator"
+            app:layout_constraintTop_toBottomOf="@+id/tv_maintain_reminder_title"
             app:shapeAppearance="@style/ShapeAppearance.MaterialComponents.SmallComponent">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -74,8 +66,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="@string/tl_hint_reminder_description"
-            android:minHeight="56dp"
-            app:boxBackgroundColor="@color/white"
             app:layout_constraintTop_toBottomOf="@+id/tl_reminder_title"
             app:shapeAppearance="@style/ShapeAppearance.MaterialComponents.SmallComponent">
 
@@ -95,8 +85,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="@string/tl_hint_reminder_range_radius"
-            android:minHeight="56dp"
-            app:boxBackgroundColor="@color/white"
             app:layout_constraintTop_toBottomOf="@+id/tl_reminder_description"
             app:shapeAppearance="@style/ShapeAppearance.MaterialComponents.SmallComponent">
 
@@ -117,8 +105,6 @@
             android:layout_marginTop="8dp"
             android:enabled="false"
             android:hint="@string/tl_hint_chosen_location"
-            android:minHeight="56dp"
-            app:boxBackgroundColor="@color/white"
             app:layout_constraintTop_toBottomOf="@+id/tl_reminder_radius_distance"
             app:shapeAppearance="@style/ShapeAppearance.MaterialComponents.SmallComponent">
 
@@ -135,21 +121,28 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/acb_create"
+            style="@style/ButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
             android:onClick="@{_ -> viewModel.createReminder()}"
             android:text="@string/b_title_create"
             android:visibility="@{viewModel.isBeingEdited ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toTopOf="@+id/acb_delete"
             app:layout_constraintTop_toBottomOf="@+id/tl_reminder_location" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/acb_delete"
+            style="@style/ButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="@{_ -> viewModel.deleteReminder()}"
             android:text="@string/b_title_delete"
             android:visibility="@{viewModel.isBeingEdited ? View.VISIBLE : View.GONE}"
-            app:layout_constraintTop_toBottomOf="@+id/acb_create" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/acb_create"
+            tools:layout_editor_absoluteX="8dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

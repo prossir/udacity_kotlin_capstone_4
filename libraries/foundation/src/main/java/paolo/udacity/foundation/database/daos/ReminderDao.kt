@@ -9,17 +9,14 @@ import paolo.udacity.foundation.database.models.ReminderEntity
 import paolo.udacity.foundation.database.models.embedded.ReminderWithPointOfInterestEntity
 import paolo.udacity.foundation.database.models.enums.ReminderStatusEnum
 import paolo.udacity.foundation.providers.DateTimeProvider
-import javax.inject.Inject
 
 
 @Dao
 abstract class ReminderDao: BaseDao<ReminderEntity> {
 
-    @Inject
-    lateinit var dateTimeProvider: DateTimeProvider<OffsetDateTime>
-
     @Transaction
-    open suspend fun insertOrUpdate(entity: ReminderEntity) {
+    open suspend fun insertOrUpdate(entity: ReminderEntity,
+                                    dateTimeProvider: DateTimeProvider<OffsetDateTime>) {
         val now = dateTimeProvider.now()
         val item = findById(entity.id)
         if (item == null) {
@@ -46,6 +43,5 @@ abstract class ReminderDao: BaseDao<ReminderEntity> {
 
     @Query("DELETE FROM reminder")
     abstract suspend fun cleanTable()
-
 
 }

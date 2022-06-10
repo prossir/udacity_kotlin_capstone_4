@@ -18,13 +18,14 @@ data class ReminderModel(
 
     // Function
     fun reset() {
+        id = FoundationConstants.EMPTY_LONG
         title = FoundationConstants.EMPTY_STRING
         description = FoundationConstants.EMPTY_STRING
         status = ReminderStatusEnum.CREATED
         pointOfInterest.reset()
     }
 
-    fun set(reminder: ReminderModel) {
+    fun setFromOtherReminder(reminder: ReminderModel) {
         id = reminder.id
         title = reminder.title
         description = reminder.description
@@ -32,7 +33,7 @@ data class ReminderModel(
         status = reminder.status
         createdAt = reminder.createdAt
         updatedAt = reminder.updatedAt
-        pointOfInterest.set(reminder.pointOfInterest)
+        pointOfInterest.setFromPointOfInterest(reminder.pointOfInterest)
     }
 
     // Static

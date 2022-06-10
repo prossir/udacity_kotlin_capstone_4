@@ -1,6 +1,7 @@
 package paolo.udacity.location_reminder.platform.views.common.models
 
 import androidx.databinding.ObservableField
+import com.google.android.gms.maps.model.LatLng
 import org.threeten.bp.OffsetDateTime
 import paolo.udacity.foundation.constants.FoundationConstants
 
@@ -16,12 +17,13 @@ data class PointOfInterestModel(
 ) {
     // Function
     fun reset() {
+        id = FoundationConstants.EMPTY_LONG
         latitude = FoundationConstants.EMPTY_DOUBLE
         longitude = FoundationConstants.EMPTY_DOUBLE
-        rangeRadius = FoundationConstants.EMPTY_DOUBLE
+        rangeRadius = FoundationConstants.ONE_DOUBLE
     }
 
-    fun set(pointOfInterest: PointOfInterestModel) {
+    fun setFromPointOfInterest(pointOfInterest: PointOfInterestModel) {
         id = pointOfInterest.id
         latitude = pointOfInterest.latitude
         longitude = pointOfInterest.longitude
@@ -29,6 +31,12 @@ data class PointOfInterestModel(
         status = pointOfInterest.status
         createdAt = pointOfInterest.createdAt
         updatedAt = pointOfInterest.updatedAt
+    }
+
+    fun setFromLatLng(latLng: LatLng) {
+        latitude = latLng.latitude
+        longitude = latLng.longitude
+        rangeRadius = 3.0
     }
 
     // Accessors
@@ -48,7 +56,7 @@ data class PointOfInterestModel(
         fun new() = PointOfInterestModel(FoundationConstants.EMPTY_LONG,
             FoundationConstants.EMPTY_DOUBLE,
             FoundationConstants.EMPTY_DOUBLE,
-            FoundationConstants.EMPTY_DOUBLE,
+            FoundationConstants.ONE_DOUBLE,
             FoundationConstants.EMPTY_INT,
             null,
             null

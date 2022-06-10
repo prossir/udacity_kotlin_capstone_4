@@ -6,7 +6,7 @@ import paolo.udacity.foundation.database.AppDatabase
 
 
 class DatabaseProvider(
-    private val context: Context
+    val context: Context
 ) {
 
     private var database: AppDatabase? = null

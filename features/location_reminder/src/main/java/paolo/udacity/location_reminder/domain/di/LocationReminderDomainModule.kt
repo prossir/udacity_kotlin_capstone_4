@@ -5,8 +5,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.hilt.android.scopes.ActivityRetainedScoped
+import org.threeten.bp.OffsetDateTime
 import paolo.udacity.foundation.database.providers.DaoProvider
-import paolo.udacity.location_reminder.data.datasource.local.PointOfInterestLocalDatasource
+import paolo.udacity.foundation.providers.DateTimeProvider
 import paolo.udacity.location_reminder.data.datasource.local.ReminderLocalDatasource
 import paolo.udacity.location_reminder.data.mapper.local.PointOfInterestLocalMapper
 import paolo.udacity.location_reminder.data.mapper.local.ReminderLocalMapper
@@ -33,12 +34,9 @@ object LocationReminderDomainModule {
     // Datasource
     // Local
     @Provides
-    fun providesPointOfInterestLocalDatasource(daoProvider: DaoProvider) =
-        PointOfInterestLocalDatasource(daoProvider)
-
-    @Provides
-    fun providesReminderLocalDatasource(daoProvider: DaoProvider) =
-        ReminderLocalDatasource(daoProvider)
+    fun providesReminderLocalDatasource(daoProvider: DaoProvider,
+                                        dateTimeProvider: DateTimeProvider<OffsetDateTime>) =
+        ReminderLocalDatasource(daoProvider, dateTimeProvider)
 
     // Repository
     @ActivityRetainedScoped

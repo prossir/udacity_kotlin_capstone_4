@@ -15,7 +15,7 @@ import org.threeten.bp.OffsetDateTime
 )
 data class PointOfInterestEntity(
     @ColumnInfo(name = FIELD_ID)
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     var id: Long,
     @ColumnInfo(name = FIELD_LATITUDE)
     var latitude: Double,

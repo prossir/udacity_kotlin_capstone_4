@@ -2,10 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="paolo.udacity.location_reminder">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application>
 
         <activity
-            android:name=".platform.views.common.views.LocationReminderActivity" />
+            android:name=".platform.views.common.views.LocationAwarenessReminderActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

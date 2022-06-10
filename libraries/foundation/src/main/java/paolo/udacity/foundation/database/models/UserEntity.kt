@@ -17,7 +17,7 @@ import paolo.udacity.foundation.database.models.enums.UserStatusEnum
 )
 data class UserEntity(
     @ColumnInfo(name = FIELD_ID)
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     var id: Long,
     @ColumnInfo(name = FIELD_FULL_NAME)
     var fullName: String,

@@ -7,17 +7,14 @@ import org.threeten.bp.OffsetDateTime
 import paolo.udacity.foundation.database.models.UserEntity
 import paolo.udacity.foundation.database.models.enums.UserStatusEnum
 import paolo.udacity.foundation.providers.DateTimeProvider
-import javax.inject.Inject
 
 
 @Dao
 abstract class UserDao: BaseDao<UserEntity> {
 
-    @Inject
-    lateinit var dateTimeProvider: DateTimeProvider<OffsetDateTime>
-
     @Transaction
-    open suspend fun insertOrUpdate(entity: UserEntity) {
+    open suspend fun insertOrUpdate(entity: UserEntity,
+                                    dateTimeProvider: DateTimeProvider<OffsetDateTime>) {
         val now = dateTimeProvider.now()
         val item = findById(entity.id)
         if (item == null) {

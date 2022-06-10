@@ -5,7 +5,7 @@ import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.format.DateTimeFormatter
 
 
-internal class OffsetDateTimeConverter {
+class OffsetDateTimeConverter {
 
     private val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
 

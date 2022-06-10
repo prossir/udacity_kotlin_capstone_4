@@ -7,10 +7,9 @@
     <string name="tl_hint_reminder_range_radius">Range radius (in meters)</string>
     <string name="tl_hint_chosen_location">Location</string>
 
+    <string name="s_tv_maintain_reminder_title_text">New reminder</string>
     <string name="iv_close_content_description">A second way of closing the create/edit reminder dialog.</string>
     <string name="b_title_create">Create</string>
     <string name="b_title_delete">Delete</string>
-
-
 
 </resources>

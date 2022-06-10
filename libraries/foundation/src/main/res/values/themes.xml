@@ -15,24 +15,46 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
 
-        <!-- Component styling -->
+        <!-- COMPONENTS -->
+        <!-- Button -->
         <item name="materialButtonStyle">@style/ButtonStyle</item>
 
-    </style>
+        <!-- TextInputLayout -->
+        <item name="textInputStyle">@style/TextInputLayoutStyle</item>
+        <!-- TextInputEditText-->
+        <item name="editTextStyle">@style/TextInputEditTextStyle</item>
 
-    <!-- Styles for the application -->
-    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
-        <item name="tint">@color/colorPrimary</item>
-        <item name="android:gravity">center</item>
-        <item name="android:minHeight">56dp</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <!-- No Action Bar -->
     <style name="Theme.Udacity_kotlin_capstone_4.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- Material Button -->
+    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="tint">@color/colorPrimary</item>
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- TextInputLayout -->
+    <style name="TextInputLayoutStyle" parent="Theme.Udacity_kotlin_capstone_4" >
+        <item name="android:textColorHint">@color/colorPrimary</item>
+        <item name="hintTextAppearance">@style/textInputLayoutHintStyle</item>
+    </style>
+    <style name="textInputLayoutHintStyle">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <!-- TextInputEditText -->
+    <style name="TextInputEditTextStyle" parent="Widget.AppCompat.EditText" >
+        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="android:minHeight">56dp</item>
     </style>
 
 </resources>

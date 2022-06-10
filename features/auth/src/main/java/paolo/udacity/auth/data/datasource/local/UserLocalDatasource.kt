@@ -1,12 +1,15 @@
 package paolo.udacity.auth.data.datasource.local
 
+import org.threeten.bp.OffsetDateTime
 import paolo.udacity.auth.domain.entity.User
 import paolo.udacity.foundation.database.models.UserEntity
 import paolo.udacity.foundation.database.providers.DaoProvider
+import paolo.udacity.foundation.providers.DateTimeProvider
 
 
 class UserLocalDatasource(
-    daoProvider: DaoProvider
+    daoProvider: DaoProvider,
+    private val dateTimeProvider: DateTimeProvider<OffsetDateTime>
 ) {
 
     private val userDao = daoProvider.getUserDao()
@@ -17,7 +20,7 @@ class UserLocalDatasource(
 
     suspend fun createAndLogUser(currentUser: UserEntity): UserEntity {
         val newUser = UserEntity.from(currentUser)
-        userDao.insertOrUpdate(newUser)
+        userDao.insertOrUpdate(newUser, dateTimeProvider)
         return newUser
     }
 

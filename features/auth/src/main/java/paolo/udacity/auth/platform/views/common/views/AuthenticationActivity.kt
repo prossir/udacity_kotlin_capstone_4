@@ -59,28 +59,29 @@ class AuthenticationActivity : AppCompatActivity() {
         }
     }
 
+    // TODO: Revise again this logic later.
     private fun launchAuthenticationEvent(event: Event<Long>) {
-        event.getContentIfNotHandled()?.apply {
-            if(FirebaseAuth.getInstance().currentUser != null) {
-                Intent().apply {
-                    intent.setClassName(
-                        this@AuthenticationActivity.packageName,
-                        PackageConstants.PACKAGE_INTENT_LOCATION_REMINDER
-                    )
-                    startActivity(intent)
-                }
-            }
-            else {
-                val providers = arrayListOf(
-                    AuthUI.IdpConfig.EmailBuilder().build(), AuthUI.IdpConfig.GoogleBuilder().build()
+        //event.getContentIfNotHandled()?.apply {
+        //}
+        if(FirebaseAuth.getInstance().currentUser != null) {
+            Intent().apply {
+                intent.setClassName(
+                    this@AuthenticationActivity.packageName,
+                    PackageConstants.PACKAGE_INTENT_LOCATION_REMINDER
                 )
+                startActivity(intent)
+            }
+        }
+        else {
+            val providers = arrayListOf(
+                AuthUI.IdpConfig.EmailBuilder().build(), AuthUI.IdpConfig.GoogleBuilder().build()
+            )
 
-                loginWithFirebaseAuthResult.launch(
-                    AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(
-                        providers
-                    ).build()
-                )
-            }
+            loginWithFirebaseAuthResult.launch(
+                AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(
+                    providers
+                ).build()
+            )
         }
     }
 

@@ -6,6 +6,7 @@ import paolo.udacity.foundation.presentation.model.FailureModel
 sealed class LocationActionState {
 
     object MapAndRemindersLoaded: LocationActionState()
+    object DismissMaintainReminder: LocationActionState()
     data class Failure(val failure: FailureModel) : LocationActionState()
 
 }

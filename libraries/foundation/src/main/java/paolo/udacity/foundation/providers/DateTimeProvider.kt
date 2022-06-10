@@ -1,6 +1,6 @@
 package paolo.udacity.foundation.providers
 
 
-interface DateTimeProvider<out T> {
+interface DateTimeProvider<T> {
     fun now(): T
 }

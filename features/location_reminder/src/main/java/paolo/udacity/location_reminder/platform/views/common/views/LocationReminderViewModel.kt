@@ -4,7 +4,6 @@ import androidx.lifecycle.*
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import paolo.udacity.foundation.database.models.enums.ReminderStatusEnum
 import paolo.udacity.foundation.extensions.safeLaunch
 import paolo.udacity.foundation.extensions.withDispatcher
@@ -34,11 +33,15 @@ class LocationReminderViewModel @Inject constructor(
         get() = _reminders
 
     private val areRemindersLoaded: MutableLiveData<Boolean> = MutableLiveData(false)
-    val isMapReady: MutableLiveData<Boolean> = MutableLiveData(false)
+    val isMapVisuallyReady: MutableLiveData<Boolean> = MutableLiveData(false)
     val mapAndRemindersAreReadyAndLoaded: MediatorLiveData<Boolean> = MediatorLiveData()
 
     init {
-        // initialize reminders
+        observeMapReadiness()
+        loadReminders()
+    }
+
+    private fun loadReminders() {
         viewModelScope.safeLaunch(::handleException) {
             _reminders = withDispatcher(dispatcher) {
                 Transformations.map(findCurrentRemindersByLatestUseCase()) {
@@ -47,10 +50,15 @@ class LocationReminderViewModel @Inject constructor(
             }
             areRemindersLoaded.postValue(true)
         }
+    }
 
-        // set the observable mediator
-        mapAndRemindersAreReadyAndLoaded.addSource(isMapReady) { it && areRemindersLoaded.value == true }
-        mapAndRemindersAreReadyAndLoaded.addSource(areRemindersLoaded) { isMapReady.value == true && it }
+    private fun observeMapReadiness() {
+        mapAndRemindersAreReadyAndLoaded.addSource(isMapVisuallyReady) {
+            mapAndRemindersAreReadyAndLoaded.value = it && (areRemindersLoaded.value == true)
+        }
+        mapAndRemindersAreReadyAndLoaded.addSource(areRemindersLoaded) {
+            mapAndRemindersAreReadyAndLoaded.value = (isMapVisuallyReady.value == true) && it
+        }
     }
 
     fun triggerSetRemindersEvent() {
@@ -65,20 +73,19 @@ class LocationReminderViewModel @Inject constructor(
         isBeingEdited.postValue(false)
         editableReminder.value?.let {
             it.reset()
-            it.pointOfInterest.latitude = latLong.latitude
-            it.pointOfInterest.longitude = latLong.longitude
-            it.pointOfInterest.rangeRadius = 3.0
+            it.pointOfInterest.setFromLatLng(latLong)
         }
     }
 
     fun createReminder() {
         saveReminder()
+        dismissMaintainReminder()
     }
 
     fun initReminderFrom(reminder: ReminderModel) {
         isBeingEdited.postValue(true)
         editableReminder.value?.apply {
-            set(reminder)
+            setFromOtherReminder(reminder)
         }
     }
 
@@ -99,6 +106,11 @@ class LocationReminderViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    // Dismiss maintenance view from screen
+    fun dismissMaintainReminder() {
+        _actionState.postValue(LocationActionState.DismissMaintainReminder)
     }
 
     private fun handleException(t: Throwable) {

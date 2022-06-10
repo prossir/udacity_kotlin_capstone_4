@@ -13,7 +13,7 @@ import paolo.udacity.foundation.database.models.enums.ReminderStatusEnum
 )
 data class ReminderEntity(
     @ColumnInfo(name = FIELD_ID)
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     var id: Long,
     @ColumnInfo(name = FIELD_TITLE)
     var title: String,
