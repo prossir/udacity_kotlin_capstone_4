@@ -27,6 +27,7 @@ object FoundationConstants {
     const val EMPTY_INT = ZERO
     const val EMPTY_DOUBLE = 0.0
     const val ONE_DOUBLE = 1.0
+    const val MINIMUM_PRECISION_DOUBLE = 150.0
     const val EMPTY_LONG = 0L
     const val EMPTY_ARRAY = "[]"
     const val EMPTY_OBJECT = "{}"

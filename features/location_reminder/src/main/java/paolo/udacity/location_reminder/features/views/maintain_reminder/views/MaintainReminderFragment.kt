@@ -1,4 +1,4 @@
-package paolo.udacity.location_reminder.platform.views.maintain_reminder.views
+package paolo.udacity.location_reminder.features.views.maintain_reminder.views
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import paolo.udacity.location_reminder.R
 import paolo.udacity.location_reminder.databinding.FragmentMaintainReminderBinding
-import paolo.udacity.location_reminder.platform.views.common.views.LocationReminderViewModel
+import paolo.udacity.location_reminder.features.views.common.views.LocationReminderViewModel
 
 
 class MaintainReminderFragment : BottomSheetDialogFragment() {

@@ -1,4 +1,4 @@
-package paolo.udacity.location_reminder.platform.views.common.models
+package paolo.udacity.location_reminder.features.views.common.models
 
 import org.threeten.bp.OffsetDateTime
 import paolo.udacity.foundation.constants.FoundationConstants

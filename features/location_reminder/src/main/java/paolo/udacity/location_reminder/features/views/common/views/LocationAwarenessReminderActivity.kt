@@ -1,40 +1,45 @@
-package paolo.udacity.location_reminder.platform.views.common.views
+package paolo.udacity.location_reminder.features.views.common.views
 
-import android.annotation.SuppressLint
+import android.Manifest
 import android.content.res.Resources
-import android.location.Location
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import com.google.android.gms.location.GeofencingClient
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import paolo.udacity.location_reminder.features.delegates.locationAwareMap.LocationAwareMapDelegate
 import paolo.udacity.foundation.presentation.model.FailureModel
-import paolo.udacity.foundation.presentation.views.LocationAwareActivity
-import paolo.udacity.foundation.presentation.views.ManipulateLocationAwareness
+import paolo.udacity.location_reminder.features.delegates.locationAwareMap.LocationAwareMapDelegateImpl
+import paolo.udacity.foundation.utils.PermissionUtils
 import paolo.udacity.location_reminder.R
 import paolo.udacity.location_reminder.databinding.ActivityLocationReminderBinding
-import paolo.udacity.location_reminder.platform.views.common.models.ReminderModel
-import paolo.udacity.location_reminder.platform.views.maintain_reminder.views.MaintainReminderFragment
+import paolo.udacity.location_reminder.features.delegates.geofenceManagement.GeofenceManagementDelegate
+import paolo.udacity.location_reminder.features.delegates.geofenceManagement.GeofenceManagementDelegateImpl
+import paolo.udacity.location_reminder.features.views.common.models.ReminderModel
+import paolo.udacity.location_reminder.features.views.maintain_reminder.views.MaintainReminderFragment
 import timber.log.Timber
 
 
 @AndroidEntryPoint
-class LocationAwarenessReminderActivity: LocationAwareActivity(), ManipulateLocationAwareness,
+class LocationAwarenessReminderActivity:
+    AppCompatActivity(),
+    GeofenceManagementDelegate by GeofenceManagementDelegateImpl(),
+    LocationAwareMapDelegate by LocationAwareMapDelegateImpl(),
     OnMapReadyCallback {
 
     private val viewModel by viewModels<LocationReminderViewModel>()
-    private val viewStateObserver = Observer<LocationActionState> { state ->
+    private val viewStateObserver = Observer<LocationUiState> { state ->
         when (state) {
-            is LocationActionState.MapAndRemindersLoaded -> setRemindersAsMarkers()
-            is LocationActionState.DismissMaintainReminder -> dismissMaintainReminder()
-            is LocationActionState.Failure -> reportErrorEvent(state.failure)
+            is LocationUiState.MapAndRemindersLoaded -> setRemindersAsMarkers()
+            is LocationUiState.DismissMaintainReminder -> dismissMaintainReminder()
+            is LocationUiState.Failure -> reportErrorEvent(state.failure)
         }
     }
     private val maintainReminderFragment by lazy { MaintainReminderFragment.newInstance() }
@@ -43,13 +48,16 @@ class LocationAwarenessReminderActivity: LocationAwareActivity(), ManipulateLoca
 
     private lateinit var map: GoogleMap
     private var registeredReminders: HashMap<Long, Int> = hashMapOf()
-    private lateinit var geofencingClient: GeofencingClient
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initObservers()
         initUi()
+        initDelegates()
+    }
+
+    private fun initDelegates() {
+        initGeofenceManager(this)
     }
 
     private fun initObservers() {
@@ -63,8 +71,6 @@ class LocationAwarenessReminderActivity: LocationAwareActivity(), ManipulateLoca
     }
 
     private fun initUi() {
-        manipulateLocationAwareness = this
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_location_reminder)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
@@ -80,6 +86,7 @@ class LocationAwarenessReminderActivity: LocationAwareActivity(), ManipulateLoca
     override fun onMapReady(map: GoogleMap) {
         viewModel.isMapVisuallyReady.postValue(true)
         this.map = map
+        initLocationAwareManager(this, map)
         map.uiSettings.isZoomControlsEnabled = true
         setMapListeners(map)
         setMapStyle(map)
@@ -127,33 +134,55 @@ class LocationAwarenessReminderActivity: LocationAwareActivity(), ManipulateLoca
     private fun setRemindersAsMarkers() {
         viewModel.reminders.observe(this) {
             for(reminder in it) {
-                createMarkerOptionsIfIsNew(reminder)?.apply {
-                    map.addMarker(this)?.apply {
+                createMarkerOptionsAndGeofenceIfIsNew(reminder)?.apply {
+                    val marker = map.addMarker(this)?.apply {
                         this.tag = reminder
+                    }
+
+                    marker?.let { existingMarker ->
+                        map.addCircle(
+                            createCircleOptions(existingMarker.position, reminder.pointOfInterest.rangeRadius)
+                        )
                     }
                 }
             }
         }
     }
 
-    private fun createMarkerOptionsIfIsNew(reminder: ReminderModel): MarkerOptions? {
+    private fun createMarkerOptionsAndGeofenceIfIsNew(reminder: ReminderModel): MarkerOptions? {
         return if(isMarkerRegisteredInMap(reminder.id)) {
             null
         } else {
-            registerReminder(reminder.id)
+            registerReminderRegistrationFlag(reminder.id)
+            // create geofence
+            createGeofenceFromReminder(reminder)
+            // creates a marker in the map
             MarkerOptions()
                 .position(LatLng(reminder.pointOfInterest.latitude, reminder.pointOfInterest.longitude))
                 .title(reminder.title)
                 .snippet(reminder.description)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
+            // creates a circular zone to emulate the zone.
+            // Instantiating CircleOptions to draw a circle around the marker
         }
+    }
+
+    private fun createCircleOptions(position: LatLng, rangeRadius: Double): CircleOptions {
+        return CircleOptions().apply {
+            this.center(position)
+            this.radius(rangeRadius)
+            this.strokeColor(Color.YELLOW)
+            this.fillColor(0x30ff0000)
+            this.strokeWidth(2f)
+        }
+        //TODO should also register the geofence here?
     }
 
     private fun isMarkerRegisteredInMap(reminderId: Long): Boolean {
         return registeredReminders[reminderId] != null
     }
 
-    private fun registerReminder(reminderId: Long) {
+    private fun registerReminderRegistrationFlag(reminderId: Long) {
         registeredReminders[reminderId] = REMINDER_REGISTERED_IN_MAP
     }
 
@@ -168,21 +197,31 @@ class LocationAwarenessReminderActivity: LocationAwareActivity(), ManipulateLoca
             Snackbar.LENGTH_LONG).show()
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
+                                            grantResults: IntArray) {
+        if (requestCode != LocationAwareMapDelegateImpl.LOCATION_PERMISSION_REQUEST_CODE) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            return
+        }
+
+        if (PermissionUtils.isPermissionGranted(permissions, grantResults,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+            || PermissionUtils.isPermissionGranted(permissions, grantResults,
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+        ) {
+            enableMyLocationIfPossible()
+        }
+        else {
+            // Permission was denied. Display an error message
+            // Display the missing permission error dialog when the fragments resume.
+            // permissionDenied = true
+        }
+    }
+
     companion object {
         private const val REMINDER_REGISTERED_IN_MAP = 1
 
         private const val TAG_FRAGMENT_MAINTAIN_REMINDER = "FRAGMENT_BOTTOM_SHEET_MAINTAIN_REMINDER"
-    }
-
-    @SuppressLint("MissingPermission")
-    override fun onLocationEnabled() {
-        map.isMyLocationEnabled = true
-    }
-
-    override fun onLocationChangedRecorded(location: Location) {
-        LatLng(location.latitude, location.longitude).let { userLocation ->
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 14f))
-        }
     }
 
 }

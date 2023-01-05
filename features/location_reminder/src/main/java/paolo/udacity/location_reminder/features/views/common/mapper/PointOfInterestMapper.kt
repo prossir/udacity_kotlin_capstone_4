@@ -1,8 +1,8 @@
-package paolo.udacity.location_reminder.platform.views.common.mapper
+package paolo.udacity.location_reminder.features.views.common.mapper
 
 import paolo.udacity.foundation.mappers.Mapper
 import paolo.udacity.location_reminder.domain.entity.PointOfInterest
-import paolo.udacity.location_reminder.platform.views.common.models.PointOfInterestModel
+import paolo.udacity.location_reminder.features.views.common.models.PointOfInterestModel
 
 
 class PointOfInterestMapper: Mapper<PointOfInterest, PointOfInterestModel>() {

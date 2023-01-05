@@ -1,4 +1,4 @@
-package paolo.udacity.location_reminder.platform.views.common.di
+package paolo.udacity.location_reminder.features.views.common.di
 
 import dagger.Module
 import dagger.Provides
@@ -9,8 +9,8 @@ import kotlinx.coroutines.Dispatchers
 import paolo.udacity.location_reminder.domain.repository.ReminderRepository
 import paolo.udacity.location_reminder.domain.use_case.FindCurrentRemindersByLatestUseCase
 import paolo.udacity.location_reminder.domain.use_case.MaintainReminderUseCase
-import paolo.udacity.location_reminder.platform.views.common.mapper.PointOfInterestMapper
-import paolo.udacity.location_reminder.platform.views.common.mapper.ReminderMapper
+import paolo.udacity.location_reminder.features.views.common.mapper.PointOfInterestMapper
+import paolo.udacity.location_reminder.features.views.common.mapper.ReminderMapper
 
 
 @Module

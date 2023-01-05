@@ -1,4 +1,4 @@
-package paolo.udacity.location_reminder.platform.views.common.models
+package paolo.udacity.location_reminder.features.views.common.models
 
 import androidx.databinding.ObservableField
 import com.google.android.gms.maps.model.LatLng
@@ -56,7 +56,7 @@ data class PointOfInterestModel(
         fun new() = PointOfInterestModel(FoundationConstants.EMPTY_LONG,
             FoundationConstants.EMPTY_DOUBLE,
             FoundationConstants.EMPTY_DOUBLE,
-            FoundationConstants.ONE_DOUBLE,
+            FoundationConstants.MINIMUM_PRECISION_DOUBLE,
             FoundationConstants.EMPTY_INT,
             null,
             null

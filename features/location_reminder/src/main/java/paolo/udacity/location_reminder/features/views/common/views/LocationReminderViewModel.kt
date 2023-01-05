@@ -1,4 +1,4 @@
-package paolo.udacity.location_reminder.platform.views.common.views
+package paolo.udacity.location_reminder.features.views.common.views
 
 import androidx.lifecycle.*
 import com.google.android.gms.maps.model.LatLng
@@ -10,8 +10,8 @@ import paolo.udacity.foundation.extensions.withDispatcher
 import paolo.udacity.foundation.presentation.mapper.FailureMapper
 import paolo.udacity.location_reminder.domain.use_case.MaintainReminderUseCase
 import paolo.udacity.location_reminder.domain.use_case.FindCurrentRemindersByLatestUseCase
-import paolo.udacity.location_reminder.platform.views.common.mapper.ReminderMapper
-import paolo.udacity.location_reminder.platform.views.common.models.ReminderModel
+import paolo.udacity.location_reminder.features.views.common.mapper.ReminderMapper
+import paolo.udacity.location_reminder.features.views.common.models.ReminderModel
 import javax.inject.Inject
 
 
@@ -24,8 +24,8 @@ class LocationReminderViewModel @Inject constructor(
     private val dispatcher: CoroutineDispatcher
 ): ViewModel() {
 
-    private val _actionState = MutableLiveData<LocationActionState>()
-    val actionState: LiveData<LocationActionState>
+    private val _actionState = MutableLiveData<LocationUiState>()
+    val actionState: LiveData<LocationUiState>
         get() = _actionState
 
     private lateinit var _reminders: LiveData<List<ReminderModel>>
@@ -62,7 +62,7 @@ class LocationReminderViewModel @Inject constructor(
     }
 
     fun triggerSetRemindersEvent() {
-        _actionState.postValue(LocationActionState.MapAndRemindersLoaded)
+        _actionState.postValue(LocationUiState.MapAndRemindersLoaded)
     }
 
     // Maintain reminders
@@ -110,12 +110,12 @@ class LocationReminderViewModel @Inject constructor(
 
     // Dismiss maintenance view from screen
     fun dismissMaintainReminder() {
-        _actionState.postValue(LocationActionState.DismissMaintainReminder)
+        _actionState.postValue(LocationUiState.DismissMaintainReminder)
     }
 
     private fun handleException(t: Throwable) {
         failureMapper.map(t).let {
-            _actionState.postValue(LocationActionState.Failure(it))
+            _actionState.postValue(LocationUiState.Failure(it))
         }
     }
 
