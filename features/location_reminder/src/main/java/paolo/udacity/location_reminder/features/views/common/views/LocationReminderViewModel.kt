@@ -10,7 +10,7 @@ import paolo.udacity.foundation.extensions.withDispatcher
 import paolo.udacity.foundation.presentation.mapper.FailureMapper
 import paolo.udacity.location_reminder.domain.use_case.MaintainReminderUseCase
 import paolo.udacity.location_reminder.domain.use_case.FindCurrentRemindersByLatestUseCase
-import paolo.udacity.location_reminder.features.views.common.mapper.ReminderMapper
+import paolo.udacity.location_reminder.features.views.common.mappers.ReminderMapper
 import paolo.udacity.location_reminder.features.views.common.models.ReminderModel
 import javax.inject.Inject
 
@@ -117,6 +117,22 @@ class LocationReminderViewModel @Inject constructor(
         failureMapper.map(t).let {
             _actionState.postValue(LocationUiState.Failure(it))
         }
+    }
+
+    private val _currentMapStyle : MutableLiveData<Int> = MutableLiveData()
+    val currentMapStyle: LiveData<Int> = _currentMapStyle
+    fun setMapStyle(which: Int) {
+        _currentMapStyle.postValue(which)
+    }
+
+    private val _remindersAreVisible: MutableLiveData<Boolean> = MutableLiveData(false)
+    val remindersAreVisible: LiveData<Boolean> = _remindersAreVisible
+    fun showRemindersAsList() {
+        _remindersAreVisible.postValue(true)
+    }
+
+    fun hideRemindersAsList() {
+        _remindersAreVisible.postValue(false)
     }
 
 }

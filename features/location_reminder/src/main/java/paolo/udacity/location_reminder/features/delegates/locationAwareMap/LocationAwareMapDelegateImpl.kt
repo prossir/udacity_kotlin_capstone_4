@@ -48,9 +48,9 @@ class LocationAwareMapDelegateImpl: LocationListener, LocationAwareMapDelegate {
         map.isMyLocationEnabled = true
     }
 
-    override fun onLocationChangedRecorded(location: Location) {
-        LatLng(location.latitude, location.longitude).let { userLocation ->
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 14f))
+    override fun onLocationChangeRecorded(location: Location) {
+        LatLng(location.latitude, location.longitude).apply {
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(this, 14f))
         }
     }
 
@@ -98,7 +98,7 @@ class LocationAwareMapDelegateImpl: LocationListener, LocationAwareMapDelegate {
 
     override fun onLocationChanged(location: Location) {
         try {
-            onLocationChangedRecorded(location)
+            onLocationChangeRecorded(location)
             locationManager.removeUpdates(this)
         } catch(e: Exception) {
             Timber.e(e)

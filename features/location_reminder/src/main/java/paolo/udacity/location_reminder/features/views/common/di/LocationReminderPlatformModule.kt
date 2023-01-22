@@ -9,8 +9,8 @@ import kotlinx.coroutines.Dispatchers
 import paolo.udacity.location_reminder.domain.repository.ReminderRepository
 import paolo.udacity.location_reminder.domain.use_case.FindCurrentRemindersByLatestUseCase
 import paolo.udacity.location_reminder.domain.use_case.MaintainReminderUseCase
-import paolo.udacity.location_reminder.features.views.common.mapper.PointOfInterestMapper
-import paolo.udacity.location_reminder.features.views.common.mapper.ReminderMapper
+import paolo.udacity.location_reminder.features.views.common.mappers.PointOfInterestMapper
+import paolo.udacity.location_reminder.features.views.common.mappers.ReminderMapper
 
 
 @Module

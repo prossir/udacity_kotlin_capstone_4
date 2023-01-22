@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "paolo.udacity.udacity_kotlin_capstone_4"
         minSdk 23
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -76,8 +76,8 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     testImplementation project(path: ':libraries:foundation', configuration: 'testDependencies')
 
-    androidTestImplementation 'androidx.test:monitor:1.5.0'
-    androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.3'
+    androidTestImplementation 'androidx.test:monitor:1.6.1'
+    androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.5'
     androidTestImplementation 'junit:junit:4.13.2'
     androidTestImplementation project(path: ':libraries:foundation', configuration: 'androidTestDependencies')
 }

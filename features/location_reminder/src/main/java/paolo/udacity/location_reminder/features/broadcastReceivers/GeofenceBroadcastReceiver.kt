@@ -39,8 +39,8 @@ class GeofenceBroadcastReceiver: BroadcastReceiver() {
             )
 
             // Send notification and log the transition details.
-            context?.apply {
-                sendNotification(this, geofenceTransitionDetails)
+            context?.let {
+                sendNotification(it, geofenceTransitionDetails)
             }
             Timber.tag(TAG).i(geofenceTransitionDetails)
         }

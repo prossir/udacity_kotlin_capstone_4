@@ -10,7 +10,7 @@ interface LocationAwareMapDelegate {
     fun initLocationAwareManager(activity: FragmentActivity, map: GoogleMap)
 
     fun onLocationEnabled()
-    fun onLocationChangedRecorded(location: Location)
+    fun onLocationChangeRecorded(location: Location)
 
     fun checkLocationPermissionWasGrantedEnableLocation() : Boolean
     fun requestAccessLocationPermission()

@@ -9,7 +9,7 @@
     <application>
 
         <activity
-            android:name=".features.views.common.views.LocationAwarenessReminderActivity" />
+            android:name=".features.views.common.views.LocationReminderActivity" />
 
         <receiver android:name=".features.broadcastReceivers.GeofenceBroadcastReceiver"/>
 

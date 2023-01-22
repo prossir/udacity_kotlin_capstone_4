@@ -1,4 +1,4 @@
-package paolo.udacity.location_reminder.features.views.common.mapper
+package paolo.udacity.location_reminder.features.views.common.mappers
 
 import paolo.udacity.foundation.mappers.Mapper
 import paolo.udacity.location_reminder.domain.entity.PointOfInterest

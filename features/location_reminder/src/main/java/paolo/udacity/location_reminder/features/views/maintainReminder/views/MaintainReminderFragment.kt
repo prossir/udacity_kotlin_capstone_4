@@ -1,11 +1,11 @@
-package paolo.udacity.location_reminder.features.views.maintain_reminder.views
+package paolo.udacity.location_reminder.features.views.maintainReminder.views
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import paolo.udacity.location_reminder.R
 import paolo.udacity.location_reminder.databinding.FragmentMaintainReminderBinding
@@ -14,20 +14,15 @@ import paolo.udacity.location_reminder.features.views.common.views.LocationRemin
 
 class MaintainReminderFragment : BottomSheetDialogFragment() {
 
-    private val viewModel by activityViewModels<LocationReminderViewModel>()
+    private val viewModel by viewModels<LocationReminderViewModel>( { requireParentFragment() } )
     private lateinit var binding: FragmentMaintainReminderBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_maintain_reminder, container, false)
-        initObservers()
         initUi()
         return binding.root
-    }
-
-    private fun initObservers() {
-
     }
 
     private fun initUi() {
